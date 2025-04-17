@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     ros-humble-teleop-twist-keyboard \
     ros-humble-rqt-image-view \
     ros-humble-turtlebot4-desktop \
+    ros-humble-turtlebot4-navigation \
 # ros-humble-gmapping \
 # ros-humble-map-server \
 # ros-humble-navigation \

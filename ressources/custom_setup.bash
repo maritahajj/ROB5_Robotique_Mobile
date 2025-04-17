@@ -12,20 +12,19 @@ ros_daemon_restart() {
 
 # ROS turtle
 ros_turtle() {
+    # ROS SOURCE
+    export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
+    source /opt/ros/humble/setup.bash
 
-# ROS SOURCE
-export RMW_IMPLEMENTATION=rmw_fastrtps_cpp
-source /opt/ros/humble/setup.bash
 
-
-#[ -t 0 ] && export ROS_SUPER_CLIENT=True || export ROS_SUPER_CLIENT=False
-export ROS_SUPER_CLIENT=True
-export ROS_DOMAIN_ID=10
-export ROS_DISCOVERY_SERVER=192.168.42.10:11811
-PS1="(humble turtle) $PS1"
+    #[ -t 0 ] && export ROS_SUPER_CLIENT=True || export ROS_SUPER_CLIENT=False
+    export ROS_SUPER_CLIENT=True
+    export ROS_DOMAIN_ID=10
+    export ROS_DISCOVERY_SERVER=192.168.42.10:11811
+    PS1="(humble turtle) $PS1"
 }
 
 
 # ROS Distant master
 #export ROS_MASTER_URI=http://192.168.0.200:11311
-#export ROS_IP=192.168.0.100
+# export ROS_IP=192.168.0.100
