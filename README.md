@@ -50,6 +50,7 @@ Mot de passe : turtlebotTP
 2. L'accès ssh se fait via la commande suivante:
 ```
 ssh ubuntu@IP_TURTLEBOT
+mdp: turtlebot4
 ```
 3. Lancer l'environnement ROS2 de son docker avec la commande suivante dans son terminal :
 ```angular2html
