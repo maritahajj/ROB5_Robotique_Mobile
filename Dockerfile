@@ -38,11 +38,13 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
 # ros-humble-move-base \
 # ros-humble-amcl \
 # ros-humble-openni-camera \
+    ros-humble-turtlebot4-simulator \
+    ros-humble-irobot-create-nodes \
     && rm -rf /var/lib/apt/lists/*
 
 
 # create turtlebot4_ws
-RUN mkdir -p /home/turtlebot4_ws/src 
+RUN mkdir -p /home/turtlebot4_ws/src
 
 
 # bash
