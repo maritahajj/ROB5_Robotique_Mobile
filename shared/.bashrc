@@ -32,7 +32,7 @@ ros_turtle() {
 source /opt/ros/humble/setup.bash
 source "$HOME/simulation_ws/install/setup.bash"
 source "$HOME/robmob_ws/install/setup.bash"
-source /usr/share/gazebo/setup.sh
+source /usr/share/gazebo/setup.bash
 
 # Turtlebot3 model for simulation
 export TURTLEBOT3_MODEL=burger
