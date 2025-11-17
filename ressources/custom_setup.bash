@@ -34,3 +34,10 @@ ros_turtle() {
 
 # Turtlebot3 model for simulation
 export TURTLEBOT3_MODEL=burger
+
+function colcon_build_n_setup() {
+    cd /home/robmob_ws || return
+    colcon build --symlink-install
+    source install/setup.bash
+    echo "Colcon build and setup complete."
+}
