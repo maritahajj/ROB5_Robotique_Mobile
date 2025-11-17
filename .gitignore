@@ -1,1 +1,3 @@
-home/
+# Ignore the shared directory except .bashrc file
+shared/*
+!shared/.bashrc

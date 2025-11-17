@@ -14,6 +14,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     net-tools \
     nano \
     terminator \
+    sudo \
     && rm -rf /var/lib/apt/lists/*
 
 # install python packages
@@ -50,19 +51,24 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     ros-humble-gazebo-plugins \
     && rm -rf /var/lib/apt/lists/*
 
-# bash
-COPY ./ressources/docker_setup.bash /
-RUN echo "source /docker_setup.bash">>/root/.bashrc
-COPY ./ressources/custom_setup.bash /
-RUN echo "source /custom_setup.bash">>/root/.bashrc
-
-CMD ["bash"]
-
-
 #RUN apt install -q -y chrony \
 #    	ntp
 # ntp -> router's rapsberry ip
+# RUN with user root
 RUN echo "pool 192.168.42.100 prefer iburst" >> /etc/ntp.conf
 
-RUN mkdir -p /home
-WORKDIR /home
+ARG C_USER
+ARG C_UID
+ARG C_GID
+
+# Copy shared bashrc
+COPY ./shared/.bashrc /home/$C_USER/.bashrc
+
+RUN groupadd -g $C_GID $C_USER && \
+    useradd -m -d /home/$C_USER -g $C_GID -s /bin/bash -u $C_UID $C_USER && \
+    adduser $C_USER sudo
+
+USER $C_USER
+WORKDIR /home/$C_USER
+
+CMD ["bash"]

@@ -4,10 +4,11 @@ docker run -it --rm \
 --env="LIBGL_ALWAYS_SOFTWARE=1" \
 --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
 --volume="$XAUTHORITY:/dot.Xauthority" \
---mount type=bind,source="$(pwd)"/home,target=/home \
+--volume="./shared:/home/$(id -un):rw" \
 --privileged=true \
 --net="host" \
 --name="turtlebot4" \
+--user="$(id -u)":"$(id -g)" \
 turtlebot4_docker
 
 # Add this line before the "turtlebot4_docker" line to mount another directory
