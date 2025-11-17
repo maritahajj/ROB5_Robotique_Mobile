@@ -5,10 +5,9 @@ docker run -it --rm \
 --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
 --volume="$XAUTHORITY:/dot.Xauthority" \
 --mount type=bind,source="$(pwd)"/home,target=/home \
---privileged \
+--privileged=true \
 --net="host" \
 --name="turtlebot4" \
---workdir="/home" \
 turtlebot4_docker
 
 # Add this line before the "turtlebot4_docker" line to mount another directory

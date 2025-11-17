@@ -50,9 +50,6 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     ros-humble-gazebo-plugins \
     && rm -rf /var/lib/apt/lists/*
 
-# create turtlebot4_ws
-RUN mkdir -p /home/turtlebot4_ws/src
-
 # bash
 COPY ./ressources/docker_setup.bash /
 RUN echo "source /docker_setup.bash">>/root/.bashrc
@@ -64,6 +61,8 @@ CMD ["bash"]
 
 #RUN apt install -q -y chrony \
 #    	ntp
-
 # ntp -> router's rapsberry ip
 RUN echo "pool 192.168.42.100 prefer iburst" >> /etc/ntp.conf
+
+RUN mkdir -p /home
+WORKDIR /home
