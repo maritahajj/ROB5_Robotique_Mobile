@@ -2,7 +2,10 @@
 
 # ROS sourcing
 source /opt/ros/humble/setup.bash
-#source /home/turtlebot4/devel/setup.bash
+source /home/simulation_ws/install/setup.bash
+
+source /home/robmob_ws/install/setup.bash
+source /usr/share/gazebo/setup.sh
 
 # ROS daemon
 ros_daemon_restart() {
@@ -28,3 +31,6 @@ ros_turtle() {
 # ROS Distant master
 #export ROS_MASTER_URI=http://192.168.0.200:11311
 # export ROS_IP=192.168.0.100
+
+# Turtlebot3 model for simulation
+export TURTLEBOT3_MODEL=burger

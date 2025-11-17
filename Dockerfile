@@ -19,6 +19,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
 # install python packages
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
     python3-pip \
+    python3-colcon-clean \
     && rm -rf /var/lib/apt/lists/*
 
 RUN pip install opencv-python
@@ -40,12 +41,17 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
 # ros-humble-openni-camera \
     ros-humble-turtlebot4-simulator \
     ros-humble-irobot-create-nodes \
+    ros-humble-cartographer \
+    ros-humble-cartographer-ros \
+    ros-humble-navigation2 \
+    ros-humble-nav2-bringup \
+    ros-humble-gazebo-ros \
+    ros-humble-gazebo-ros-pkgs \
+    ros-humble-gazebo-plugins \
     && rm -rf /var/lib/apt/lists/*
-
 
 # create turtlebot4_ws
 RUN mkdir -p /home/turtlebot4_ws/src
-
 
 # bash
 COPY ./ressources/docker_setup.bash /
