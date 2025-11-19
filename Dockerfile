@@ -11,6 +11,9 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     build-essential \
     cmake \
     git \
+    wget \
+    curl \
+    bash-completion \
     net-tools \
     nano \
     terminator \
