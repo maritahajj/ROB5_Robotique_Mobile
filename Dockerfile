@@ -33,6 +33,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     ros-humble-robot-state-publisher \
     ros-humble-depthimage-to-laserscan \
     ros-humble-joy \
+    ros-humble-joy-linux \
     ros-humble-teleop-twist-keyboard \
     ros-humble-rqt-image-view \
     ros-humble-turtlebot4-desktop \
