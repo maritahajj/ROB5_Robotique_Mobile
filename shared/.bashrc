@@ -177,3 +177,5 @@ function colcon_build_n_setup() {
 }
 
 alias cbns='colcon_build_n_setup'
+
+alias clean_cmake_prefix_path="unset AMENT_CMAKE_PREFIX_PATH && unset CMAKE_PREFIX_PATH"
