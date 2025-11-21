@@ -6,6 +6,7 @@ docker run -it --rm \
 --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
 --volume="$XAUTHORITY:/dot.Xauthority" \
 --volume="./shared:/home/$(id -un):rw" \
+--volume="/dev/input:/dev/input:rw" \
 --privileged=true \
 --net="host" \
 --name="turtlebot4" \

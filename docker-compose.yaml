@@ -17,3 +17,4 @@ services:
       - /tmp/.X11-unix:/tmp/.X11-unix:rw
       - ${XAUTHORITY:-$HOME/.Xauthority}:/dot.Xauthority:rw
       - ./shared:/home/${USER}:rw
+      - /dev/input:/dev/input:rw
