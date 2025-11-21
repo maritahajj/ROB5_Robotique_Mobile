@@ -74,7 +74,7 @@ Cette commande lancera aussi RVIZ2 avec une configuration par défaut.
 
 Lancer RVIZ2
 
-```
+```bash
 ros2 run rviz2 rviz2
 ```
 

@@ -18,8 +18,10 @@ docker image prune -f
 mkdir -p "shared/robmob_ws/src"
 mkdir -p "shared/simulation_ws/src"
 
-# clone turtlebot3 simulations repo (turtlebot4 simulation has bad performance so we prefer turtlebot3 simulation)
-git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git "./shared/simulation_ws/src/turtlebot3_simulations"
-git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git "./shared/simulation_ws/src/turtlebot3_msgs"
-git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/DynamixelSDK.git "./shared/simulation_ws/src/DynamixelSDK"
-git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3.git "./shared/simulation_ws/src/turtlebot3"
+if [ -z "$(ls -A "shared/simulation_ws/src")" ]; then
+  # clone turtlebot3 simulations repo (turtlebot4 simulation has bad performance so we prefer turtlebot3 simulation)
+  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git "./shared/simulation_ws/src/turtlebot3_simulations"
+  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git "./shared/simulation_ws/src/turtlebot3_msgs"
+  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/DynamixelSDK.git "./shared/simulation_ws/src/DynamixelSDK"
+  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3.git "./shared/simulation_ws/src/turtlebot3"
+fi
