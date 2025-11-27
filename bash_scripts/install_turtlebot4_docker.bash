@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Build dockerfile
-docker build --tag turtlebot4_docker .
+docker build --tag turtlebot4_docker ../
 docker image prune -f
 
 # Clone minilab git and chose correct branch
