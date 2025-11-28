@@ -12,6 +12,7 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
     cmake \
     git \
     wget \
+    grep \
     curl \
     bash-completion \
     net-tools \

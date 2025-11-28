@@ -10,7 +10,7 @@
    3. [Post-traitement de la carte](#post-traitement-de-la-carte)
 
 ## Description
-Le projet a pour but d'effectuer un algorithme de SLAM (Simultaneous Localization and Mapping) avec le robot Turtlebot4. 
+Le projet a pour but d'effectuer un algorithme de SLAM (Simultaneous Localization and Mapping) avec le robot Turtlebot4.
 Lien vers la documentation du turtlebot4 : https://turtlebot.github.io/turtlebot4-user-manual/
 
 ## Mise en place de l'environnement Docker
@@ -22,7 +22,7 @@ Puis lancer les scripts suivants en fonction de ce que vous souhaitez réaliser 
 - Ouvirir un nouveau terminal dans le docker : `join_docker.bash`
 - Désinstaller le docker : `uninstall_docker.bash`
 
-Une fois le docker démarrer il faut mettre la bonne adresse IP du robot et le bon domaine ID dans le .bashrc du docker (information à récupérer sur l'étiquette du robot)
+Une fois le docker démarré, il faut mettre la bonne adresse IP du robot et le bon domaine ID dans le .bashrc du docker (information à récupérer sur l'étiquette du robot)
 La fonction ros_turtle permet de configurer l'environnement ROS2 pour le turtlebot4 :
 ```bash
 # ROS turtle
@@ -44,7 +44,7 @@ Enfin se connecter au réseau wifi des turtlebot4 :
 Nom du réseau : Turtlebot_TP_5G
 Mot de passe : turtlebotTP
 ```
-   
+
 ## Démarrer le turtlebot4
 1. Allumer le Turtlebot4 en le plaçant sur le socle de recharge et attendre le bruit de fin de démarrage.
 2. L'accès ssh se fait via la commande suivante:
@@ -70,7 +70,7 @@ On peut vérifier que la communication est bien établie en lançant la commande
 ```angular2html
 ros2 topic list
 ```
-On doit obtenir la liste des topics ROS2 du robot : 
+On doit obtenir la liste des topics ROS2 du robot :
 ```angular2html
 /battery_state
 /cliff_intensity
@@ -143,7 +143,7 @@ Si erreur de type :
 ```
 Failed to populate field: 'SaveMap_Request' object has no attribute 'name:data'
 ```
-alors essayer : 
+alors essayer :
 ```
 ros2 run nav2_map_server map_saver_cli -f map_name
 ```
@@ -157,5 +157,3 @@ import cv2
 map = cv2.imread('my_map.pgm', cv2.IMREAD_GRAYSCALE)
 ```
 Dans le fichier yaml, on peut récupérer les informations de résolution (m/pixel) de la carte.
-
-

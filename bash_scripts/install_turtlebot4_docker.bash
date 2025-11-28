@@ -1,5 +1,7 @@
 #!/bin/bash
 
+SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+
 # Build dockerfile
 C_USER=$(id -un)
 C_UID=$(id -u)
@@ -9,7 +11,7 @@ docker build \
   --build-arg C_USER=$C_USER \
   --build-arg C_UID=$C_UID \
   --build-arg C_GID=$C_GID \
-  -t turtlebot4_docker ../
+  -t turtlebot4_docker ${SCRIPT_DIR}/../
 
 # Clean up dangling images
 docker image prune -f
