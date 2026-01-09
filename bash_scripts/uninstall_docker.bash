@@ -1,19 +1,45 @@
 #!/bin/bash
 
+log_polytech () {
+	log_string=$1
+  color_string="\033[38;2;0;175;240m$log_string\e[0m"
+  echo -e "$color_string"
+}
+
+log_warn () {
+  log_string=$1
+  color_string="\e[1;33m$log_string\e[0m"
+  echo -e "$color_string"
+}
+
+log_error () {
+  log_string=$1
+  color_string="\e[1;31m$log_string\e[0m"
+  echo -e "$color_string"
+}
+
+# Print pretty logo
+
+log_polytech "\n▄▄▄▄▄▄▄     ▄▄▄▄▄   ▄▄▄▄▄▄▄   ▄▄▄      ▄▄▄   ▄▄▄▄▄   ▄▄▄▄▄▄▄
+███▀▀███▄ ▄███████▄ ███▀▀███▄ ████▄  ▄████ ▄███████▄ ███▀▀███▄
+███▄▄███▀ ███   ███ ███▄▄███▀ ███▀████▀███ ███   ███ ███▄▄███▀
+███▀▀██▄  ███▄▄▄███ ███  ███▄ ███  ▀▀  ███ ███▄▄▄███ ███  ███▄
+███  ▀███  ▀█████▀  ████████▀ ███      ███  ▀█████▀  ████████▀\n"
+
 # Ask for validation
-echo This script will delete all docker packages \
+log_warn This script will delete all docker packages \
     and all docker images and containers saved in the default directories of docker
-echo All files in "/var/lib/docker" and "/var/lib/containerd" will be lost
+log_warn All files in "/var/lib/docker" and "/var/lib/containerd" will be lost
 
 # First
 while true; do
 read -p "Do you want to proceed? (y/n) " yn
 case $yn in 
-	[yY] ) echo continuing...;
+	[yY] ) log_polytech "continuing...";
 		break;;
-	[nN] ) echo exiting...;
+	[nN] ) log_polytech "exiting...";
 		exit;;
-	* ) echo invalid response;;
+	* ) log_error "invalid response";;
 esac
 done
 
@@ -21,11 +47,11 @@ done
 while true; do
 read -p "Are you really sure?(y/n) " yn
 case $yn in 
-	[yY] ) echo ok, we will proceed;
+	[yY] ) log_polytech "ok, we will proceed";
 		break;;
-	[nN] ) echo exiting...;
+	[nN] ) log_polytech "exiting...";
 		exit;;
-	* ) echo invalid response;;
+	* ) log_error "invalid response";;
 esac
 done
 

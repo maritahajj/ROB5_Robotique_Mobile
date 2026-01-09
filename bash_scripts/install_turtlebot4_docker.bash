@@ -5,6 +5,12 @@ SHARED_FOLDER_NAME=shared
 
 # Util functions
 
+log_polytech () {
+	log_string=$1
+  color_string="\033[38;2;0;175;240m$log_string\e[0m"
+  echo -e "$color_string"
+}
+
 log_warn () {
   log_string=$1
   color_string="\e[1;33m$log_string\e[0m"
@@ -16,6 +22,15 @@ log_error () {
   color_string="\e[1;31m$log_string\e[0m"
   echo -e "$color_string"
 }
+
+# Print pretty logo
+
+log_polytech "\n▄▄▄▄▄▄▄     ▄▄▄▄▄   ▄▄▄▄▄▄▄   ▄▄▄      ▄▄▄   ▄▄▄▄▄   ▄▄▄▄▄▄▄
+███▀▀███▄ ▄███████▄ ███▀▀███▄ ████▄  ▄████ ▄███████▄ ███▀▀███▄
+███▄▄███▀ ███   ███ ███▄▄███▀ ███▀████▀███ ███   ███ ███▄▄███▀
+███▀▀██▄  ███▄▄▄███ ███  ███▄ ███  ▀▀  ███ ███▄▄▄███ ███  ███▄
+███  ▀███  ▀█████▀  ████████▀ ███      ███  ▀█████▀  ████████▀\n"
+
 
 # Build dockerfile
 C_USER=$(id -un)
@@ -41,14 +56,14 @@ if [ -d ${SCRIPT_DIR}/../${SHARED_FOLDER_NAME} ]; then
 		log_warn "Error: current user has not the permissions to write in ${SHARED_FOLDER_NAME}. Do you want to change the owner to you ? (Y/n)"
 		read INPUT
 		if [ "${INPUT}" == "Y" ]; then
-			echo "Changing permission"
+			log_polytech "Changing permission"
 			sudo chown -R $(whoami):$(whoami) ${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}
 		else
 			log_error "Cannot continue without permissions. Please check manually the state of the ${SHARED_FOLDER_NAME} folder and rerun this script"
 			exit 1 
 		fi
 	else
-		echo "All good"
+		log_polytech "All good"
 	fi  
 fi
 

@@ -1,19 +1,45 @@
 #!/bin/bash
 
-echo If docker is already installed,
-echo you have to run the "uninstall_docker.bash" script first
-echo This script will only work after docker uninstall or
-echo for a fisrt install
+log_polytech () {
+	log_string=$1
+  color_string="\033[38;2;0;175;240m$log_string\e[0m"
+  echo -e "$color_string"
+}
+
+log_warn () {
+  log_string=$1
+  color_string="\e[1;33m$log_string\e[0m"
+  echo -e "$color_string"
+}
+
+log_error () {
+  log_string=$1
+  color_string="\e[1;31m$log_string\e[0m"
+  echo -e "$color_string"
+}
+
+# Print pretty logo
+
+log_polytech "\n▄▄▄▄▄▄▄     ▄▄▄▄▄   ▄▄▄▄▄▄▄   ▄▄▄      ▄▄▄   ▄▄▄▄▄   ▄▄▄▄▄▄▄
+███▀▀███▄ ▄███████▄ ███▀▀███▄ ████▄  ▄████ ▄███████▄ ███▀▀███▄
+███▄▄███▀ ███   ███ ███▄▄███▀ ███▀████▀███ ███   ███ ███▄▄███▀
+███▀▀██▄  ███▄▄▄███ ███  ███▄ ███  ▀▀  ███ ███▄▄▄███ ███  ███▄
+███  ▀███  ▀█████▀  ████████▀ ███      ███  ▀█████▀  ████████▀\n"
+
+log_warn If docker is already installed,
+log_warn you have to run the "uninstall_docker.bash" script first
+log_warn This script will only work after docker uninstall or
+log_warn for a first install
 
 # Ask if proceed
 while true; do
 read -p "Do you want to proceed? (y/n) " yn
 case $yn in 
-	[yY] ) echo Installing docker;
+	[yY] ) log_polytech "Installing docker";
 		break;;
-	[nN] ) echo exiting...;
+	[nN] ) log_polytech "exiting...";
 		exit;;
-	* ) echo invalid response;;
+	* ) log_error "invalid response";;
 esac
 done
 
@@ -43,25 +69,25 @@ sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin 
 
 # Create group and add user to run docker without sudo
 # https://docs.docker.com/engine/install/linux-postinstall/
-sudo groupadd docker
+sudo groupadd docker # Command problematic, will pause the script to join a new terminal
 sudo usermod -aG docker $USER
 newgrp docker
 
 
 # Run test
-echo Docker should be installed now
-echo Do you want to run a test docker container to check the install?
-echo The script will download the test image
-echo then a container should run and print "Hello world"
+log_polytech Docker should be installed now
+log_polytech Do you want to run a test docker container to check the install?
+log_polytech The script will download the test image
+log_polytech then a container should run and print "Hello world"
 # Ask if proceed
 while true; do
 read -p "Run the test? (y/n) " yn
 case $yn in 
-	[yY] ) echo Installing docker;
+	[yY] ) log_polytech "Installing docker";
 		break;;
-	[nN] ) echo exiting...;
+	[nN] ) log_polytech "exiting...";
 		exit;;
-	* ) echo invalid response;;
+	* ) log_error "invalid response";;
 esac
 done
 
