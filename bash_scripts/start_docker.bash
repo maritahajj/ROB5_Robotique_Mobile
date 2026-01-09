@@ -1,3 +1,5 @@
+SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+
 docker run -it --rm \
 --env="DISPLAY" \
 --env="QT_X11_NO_MITSHM=1" \
@@ -5,7 +7,7 @@ docker run -it --rm \
 --env="TURTLEBOT4_CONTAINER=1" \
 --volume="/tmp/.X11-unix:/tmp/.X11-unix:rw" \
 --volume="$XAUTHORITY:/dot.Xauthority" \
---volume="./shared:/home/$(id -un):rw" \
+--volume="${SCRIPT_DIR}/../shared:/home/$(id -un):rw" \
 --volume="/dev/input:/dev/input:rw" \
 --privileged=true \
 --net="host" \

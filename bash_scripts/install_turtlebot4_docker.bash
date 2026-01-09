@@ -1,6 +1,21 @@
 #!/bin/bash
 
 SCRIPT_DIR="$( cd "$( dirname "$0" )" && pwd )"
+SHARED_FOLDER_NAME=shared
+
+# Util functions
+
+log_warn () {
+  log_string=$1
+  color_string="\e[1;33m$log_string\e[0m"
+  echo -e "$color_string"
+}
+
+log_error () {
+  log_string=$1
+  color_string="\e[1;31m$log_string\e[0m"
+  echo -e "$color_string"
+}
 
 # Build dockerfile
 C_USER=$(id -un)
@@ -16,14 +31,35 @@ docker build \
 # Clean up dangling images
 docker image prune -f
 
-# Copy files to workspace folder
-mkdir -p "shared/robmob_ws/src"
-mkdir -p "shared/simulation_ws/src"
+# Checking if shared folder already exists from previous installation
+if [ -d ${SCRIPT_DIR}/../${SHARED_FOLDER_NAME} ]; then
+	folder_state=$(ls -l ${SCRIPT_DIR}/../ | grep ${SHARED_FOLDER_NAME})
+	permission=$(echo "$folder_state" | cut -d ' ' -f1 )
+	owner=$(echo "$folder_state" | cut -d ' ' -f3 )
+	# echo "Owner: ${owner}, permissions: ${permission}"
+	if [ "${owner}" != "$(whoami)" ]; then
+		log_warn "Error: current user has not the permissions to write in ${SHARED_FOLDER_NAME}. Do you want to change the owner to you ? (Y/n)"
+		read INPUT
+		if [ "${INPUT}" == "Y" ]; then
+			echo "Changing permission"
+			sudo chown -R $(whoami):$(whoami) ${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}
+		else
+			log_error "Cannot continue without permissions. Please check manually the state of the ${SHARED_FOLDER_NAME} folder and rerun this script"
+			exit 1 
+		fi
+	else
+		echo "All good"
+	fi  
+fi
 
-if [ -z "$(ls -A "shared/simulation_ws/src")" ]; then
+# Copy files to workspace folder
+mkdir -p "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/robmob_ws/src"
+mkdir -p "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/simulation_ws/src"
+
+if [ -z "$(ls -A "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/simulation_ws/src")" ]; then
   # clone turtlebot3 simulations repo (turtlebot4 simulation has bad performance so we prefer turtlebot3 simulation)
-  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git "./shared/simulation_ws/src/turtlebot3_simulations"
-  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git "./shared/simulation_ws/src/turtlebot3_msgs"
-  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/DynamixelSDK.git "./shared/simulation_ws/src/DynamixelSDK"
-  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3.git "./shared/simulation_ws/src/turtlebot3"
+  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/simulation_ws/src/turtlebot3_simulations"
+  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/simulation_ws/src/turtlebot3_msgs"
+  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/DynamixelSDK.git "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/simulation_ws/src/DynamixelSDK"
+  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3.git "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/simulation_ws/src/turtlebot3"
 fi
