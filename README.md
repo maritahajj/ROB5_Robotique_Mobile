@@ -137,7 +137,7 @@ ros2 launch turtlebot4_viz view_robot.launch.py
 ```
 Pour sauvegarder la carte générée, il faut lancer la commande suivante :
 ```
-ros2 service call /slam_toolbox/save_map slam_toolbox/srv/SaveMap "name:data: 'map_name'"
+ros2 service call /slam_toolbox/save_map slam_toolbox/srv/SaveMap "name: {data: 'map_name'}"
 ```
 Si erreur de type :
 ```
@@ -147,7 +147,7 @@ alors essayer :
 ```
 ros2 run nav2_map_server map_saver_cli -f map_name
 ```
-On a alors deux fichiers map_name.pgm et map_name.yaml qui sont générés.
+On a alors deux fichiers (__map_name.pgm__ et __map_name.yaml__) qui sont générés.
 
 ### Post-traitement de la carte
 Il est possible de post-traiter la carte générée à l'aide du package Opencv. Voici un exemple de script python pour post-traiter la carte :
