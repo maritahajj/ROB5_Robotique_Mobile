@@ -24,10 +24,9 @@ RUN apt-get update && apt-get install -q -y --no-install-recommends \
 # install python packages
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
     python3-pip \
+    python3-opencv \
     python3-colcon-clean \
     && rm -rf /var/lib/apt/lists/*
-
-RUN pip install opencv-python
 
 # install ROS useful tools
 RUN apt-get update && apt-get install -q -y --no-install-recommends \
@@ -66,12 +65,14 @@ ARG C_USER
 ARG C_UID
 ARG C_GID
 
-# Copy shared bashrc
-COPY ./shared/.bashrc /home/$C_USER/.bashrc
+RUN groupadd -g "$C_GID" "$C_USER" && \
+    useradd -m -d "/home/$C_USER" -g "$C_GID" -s /bin/bash -u "$C_UID" "$C_USER" && \
+    adduser "$C_USER" sudo && \
+    printf '%s ALL=(ALL:ALL) NOPASSWD: ALL\n' "$C_USER" > /etc/sudoers.d/turtlebot4 && \
+    chmod 0440 /etc/sudoers.d/turtlebot4 && \
+    visudo -c
 
-RUN groupadd -g $C_GID $C_USER && \
-    useradd -m -d /home/$C_USER -g $C_GID -s /bin/bash -u $C_UID $C_USER && \
-    adduser $C_USER sudo
+COPY --chown=$C_UID:$C_GID ./shared/.bashrc /home/$C_USER/.bashrc
 
 USER $C_USER
 WORKDIR /home/$C_USER

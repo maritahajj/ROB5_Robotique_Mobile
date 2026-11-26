@@ -13,6 +13,10 @@
 Le projet a pour but d'effectuer un algorithme de SLAM (Simultaneous Localization and Mapping) avec le robot Turtlebot4.
 Lien vers la documentation du turtlebot4 : https://turtlebot.github.io/turtlebot4-user-manual/
 
+Pour cartographier dans Gazebo, suivre le [guide de simulation TurtleBot3](SIMULATION_README.md).
+
+Avant de commencer, lire les [bonnes pratiques du projet](BONNES_PRATIQUES.md).
+
 ## Mise en place de l'environnement Docker
 Récupérer le dossier dans le gitlab associé : https://gitlabsu.sorbonne-universite.fr/polytech_rob/robots/turtlebot/turtlebot4_env_docker/-/tree/main?ref_type=heads
 Puis lancer les scripts suivants en fonction de ce que vous souhaitez réaliser qui se situent dans le dossier bash_scripts :
@@ -119,11 +123,7 @@ On doit obtenir la liste des topics ROS2 du robot :
 
 ## Projet
 ### Déplacement du robot
-Pour déplacer le robot dans l'environnement, il est possible d'utiliser le package teleop_twist_keyboard avec la commande :
-```
-ros2 run teleop_twist_keyboard teleop_twist_keyboard
-```
-On peut alors utiliser les touches i et j pour faire tourner et avance le turtlebot.
+Pour déplacer le robot, développez votre propre nœud de téléopération dans `robmob_ws`.
 
 ### Génération de la carte
 Pour générer une carte il faut lancer la commande suivante depuis votre docker :
@@ -150,10 +150,7 @@ ros2 run nav2_map_server map_saver_cli -f map_name
 On a alors deux fichiers (__map_name.pgm__ et __map_name.yaml__) qui sont générés.
 
 ### Post-traitement de la carte
-Il est possible de post-traiter la carte générée à l'aide du package Opencv. Voici un exemple de script python pour post-traiter la carte :
-```python
-import cv2
-# Load the map.pgm
-map = cv2.imread('my_map.pgm', cv2.IMREAD_GRAYSCALE)
-```
-Dans le fichier yaml, on peut récupérer les informations de résolution (m/pixel) de la carte.
+Votre nœud récupère la grille d’occupation via un service de type `nav_msgs/srv/GetMap`.
+
+- **SLAM en cours.** Appelez `/slam_toolbox/dynamic_map` pour récupérer la carte en cours de construction.
+- **SLAM arrêté.** Copiez [map_server_amcl.launch.py](ressources/map_server_amcl.launch.py) dans le dossier `launch/` d’un package de `robmob_ws`. Adaptez-le pour charger le YAML de la carte sauvegardée, puis lancez-le. Votre nœud appelle `/map_server/map` pour récupérer la carte et tester la recherche de chemin.

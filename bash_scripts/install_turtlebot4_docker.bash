@@ -35,16 +35,13 @@ log_polytech "\n▄▄▄▄▄▄▄     ▄▄▄▄▄   ▄▄▄▄▄▄�
 # Build dockerfile
 C_USER=$(id -un)
 C_UID=$(id -u)
-C_GID=$(id -g)
+C_GID=$(id -g "$C_USER")
 
 docker build \
-  --build-arg C_USER=$C_USER \
-  --build-arg C_UID=$C_UID \
-  --build-arg C_GID=$C_GID \
-  -t turtlebot4_docker ${SCRIPT_DIR}/../
-
-# Clean up dangling images
-docker image prune -f
+  --build-arg C_USER="$C_USER" \
+  --build-arg C_UID="$C_UID" \
+  --build-arg C_GID="$C_GID" \
+  -t turtlebot4_docker "${SCRIPT_DIR}/../" || exit 1
 
 # Checking if shared folder already exists from previous installation
 if [ -d ${SCRIPT_DIR}/../${SHARED_FOLDER_NAME} ]; then
@@ -68,13 +65,12 @@ if [ -d ${SCRIPT_DIR}/../${SHARED_FOLDER_NAME} ]; then
 fi
 
 # Copy files to workspace folder
-mkdir -p "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/robmob_ws/src"
-mkdir -p "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/simulation_ws/src"
+simulation_src="${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/simulation_ws/src"
+mkdir -p "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/robmob_ws/src" "$simulation_src" || exit 1
 
-if [ -z "$(ls -A "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/simulation_ws/src")" ]; then
-  # clone turtlebot3 simulations repo (turtlebot4 simulation has bad performance so we prefer turtlebot3 simulation)
-  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3_simulations.git "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/simulation_ws/src/turtlebot3_simulations"
-  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3_msgs.git "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/simulation_ws/src/turtlebot3_msgs"
-  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/DynamixelSDK.git "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/simulation_ws/src/DynamixelSDK"
-  git clone --depth 1 -b humble https://github.com/ROBOTIS-GIT/turtlebot3.git "${SCRIPT_DIR}/../${SHARED_FOLDER_NAME}/simulation_ws/src/turtlebot3"
-fi
+for repository in turtlebot3_simulations turtlebot3_msgs DynamixelSDK turtlebot3; do
+  if [[ ! -e "$simulation_src/$repository" ]]; then
+    git clone --depth 1 -b humble "https://github.com/ROBOTIS-GIT/$repository.git" \
+      "$simulation_src/$repository" || exit 1
+  fi
+done

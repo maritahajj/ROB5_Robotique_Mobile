@@ -131,8 +131,13 @@ alias d_up="docker-compose up -d"
 ###### CUSTOM SETTINGS ######
 
 
-# xauth : enables lanching GUI apps in host
-xauth merge /dot.Xauthority
+# Load the current X11 display when reopening the persistent container.
+if [[ ${XAUTHORITY:-} == "$HOME/.docker-x11/Xauthority" && -r "$HOME/.docker-x11/display" ]]; then
+    IFS= read -r DISPLAY < "$HOME/.docker-x11/display"
+    export DISPLAY
+elif [[ -n ${DISPLAY:-} && -f /dot.Xauthority && -r /dot.Xauthority ]]; then
+    export XAUTHORITY=/dot.Xauthority
+fi
 
 # ROS daemon
 ros_daemon_restart() {
@@ -163,9 +168,15 @@ ros_turtle() {
 
 # ROS sourcing
 source /opt/ros/humble/setup.bash
-source "$HOME/simulation_ws/install/local_setup.bash"
-source "$HOME/robmob_ws/install/local_setup.bash"
-source /usr/share/gazebo/setup.bash
+if [[ -f "$HOME/simulation_ws/install/local_setup.bash" ]]; then
+    source "$HOME/simulation_ws/install/local_setup.bash"
+fi
+if [[ -f "$HOME/robmob_ws/install/local_setup.bash" ]]; then
+    source "$HOME/robmob_ws/install/local_setup.bash"
+fi
+if [[ -f /usr/share/gazebo/setup.bash ]]; then
+    source /usr/share/gazebo/setup.bash
+fi
 
 # Turtlebot3 model for simulation
 export TURTLEBOT3_MODEL=burger
